@@ -10,7 +10,7 @@ public class GameController {
             result = "win";
         } else {
             provideFeedback(guess, secretWord);
-            updateRemainingLetters(guess);
+            updateRemainingLetters(guess, secretWord);
             System.out.println("Remaining letters: " + remainingLetters);
         }
     }
@@ -25,18 +25,17 @@ public class GameController {
         }
     }
 
-    private void updateRemainingLetters(String guess) {
+    private void updateRemainingLetters(String guess, String secretWord) {
         for (char c : guess.toUpperCase().toCharArray()) {
-            if (remainingLetters.contains(String.valueOf(c))) {
+            if (!secretWord.toUpperCase().contains(String.valueOf(c)) && remainingLetters.contains(String.valueOf(c))) {
                 // Удаление буквы и лишнего пробела
                 remainingLetters = remainingLetters.replace(c + " ", "");
                 remainingLetters = remainingLetters.replace(String.valueOf(c), "");
             }
         }
-        // Убедись, что все оставшиеся буквы идут через пробелы
-        remainingLetters = String.join(" ", remainingLetters.split(" "));
+        // Обновляем оставшиеся буквы, добавляя пробелы между буквами
+        remainingLetters = String.join(" ", remainingLetters.trim().split(" "));
     }
-
 
     private boolean isGameWon(String guess, String secretWord) {
         return guess.equalsIgnoreCase(secretWord);
