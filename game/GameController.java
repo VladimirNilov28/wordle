@@ -28,10 +28,13 @@ public class GameController {
     private void updateRemainingLetters(String guess) {
         for (char c : guess.toUpperCase().toCharArray()) {
             if (remainingLetters.contains(String.valueOf(c))) {
-                remainingLetters = remainingLetters.replace(String.valueOf(c) + " ", "");
+                remainingLetters = remainingLetters.replace(String.valueOf(c), "");
             }
         }
+        // Добавляем пробелы между оставшимися буквами
+        remainingLetters = String.join(" ", remainingLetters.split(""));
     }
+
 
     private boolean isGameWon(String guess, String secretWord) {
         return guess.equalsIgnoreCase(secretWord);
