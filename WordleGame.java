@@ -77,7 +77,7 @@ public class WordleGame {
         while (attempts < 6) {
             validInput = false;
             while (!validInput) {
-                System.out.print("Enter your guess: ");
+                System.out.print("Enter your guess:  ");
                 guess = scanner.nextLine();
                 if (guess == null || guess.isEmpty()) {
                     System.out.println("Guess can't be empty, please try again.");

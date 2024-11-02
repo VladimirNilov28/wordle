@@ -3,7 +3,7 @@ package game;
 public class GameController {
 
     private String result = "";
-    private String remainingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private String remainingLetters = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
 
     public void playGame(String guess, String secretWord) {
         if (isGameWon(guess, secretWord)) {
@@ -28,7 +28,7 @@ public class GameController {
     private void updateRemainingLetters(String guess) {
         for (char c : guess.toUpperCase().toCharArray()) {
             if (remainingLetters.contains(String.valueOf(c))) {
-                remainingLetters = remainingLetters.replace(String.valueOf(c), "");
+                remainingLetters = remainingLetters.replace(String.valueOf(c) + " ", "");
             }
         }
     }
