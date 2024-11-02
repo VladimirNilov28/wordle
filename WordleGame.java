@@ -58,21 +58,21 @@ public class WordleGame {
                 validInput = true;
             }
         }
-
+        System.out.println("Welcome to Wordle! Guess the 5-letter word.");
         while (attempts < 6){
             validInput = false;
-            while(!validInput){
+            while (!validInput) {
                 System.out.print("Enter your guess: ");
                 guess = scanner.nextLine();
-                if(guess == null || guess.isEmpty())
-                    System.out.println("Guess cant be empty, please try again.");
-                if(!hasOnlyLowercaseLetters(guess)){
-                    System.out.println("Guess can contain only lower cases letters, try again");
-                }
-                if(guess.length() != 5){
-                    System.out.println("Your guess contains more or less that 5 letters, try again");
-                }
-                else{
+                if (guess == null || guess.isEmpty()) {
+                    System.out.println("Guess can't be empty, please try again.");
+                } else if (!hasOnlyLowercaseLetters(guess)) {
+                    System.out.println("Your guess must only contain lowercase letters.");
+                } else if (guess.length() != 5) {
+                    System.out.println("Your guess must be exactly 5 letters long.");
+                } else if (!wordList.contains(guess)) {
+                    System.out.println("Word not in list. Please enter a valid word.");
+                } else {
                     validInput = true;
                 }
             }
