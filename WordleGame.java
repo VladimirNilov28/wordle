@@ -9,7 +9,6 @@ import java.util.Random;
 import io.WordReader;
 import java.util.List;
 
-
 public class WordleGame {
 
     private final Scanner scanner;
@@ -21,45 +20,61 @@ public class WordleGame {
     private int attempts = 0;
     private String result = "";
 
-
     public WordleGame(Scanner scanner) {
         this.scanner = scanner;
         this.controller = new GameController();
-
     }
 
     public static void main(String[] args) {
-        if(args == null || args.length == 0) {
-            System.out.println("Exception: You must pass the word index as a command line argument.");
-            return;
-        }
-
         WordleGame game = new WordleGame(new Scanner(System.in));
         try {
-            game.startGame(args);
+            if (args == null || args.length == 0) {
+                //System.out.println("No word index provided, using a random word from the list.");
+                game.startGame(null); // Передаем null, чтобы указать на случайный выбор слова
+            } else {
+                game.startGame(args);
+            }
         } catch (FileNotFoundException e) {
-            System.out.println("Exception: " + e.getMessage());        }
+            System.out.println("Exception: " + e.getMessage());
+        }
     }
 
     private void startGame(String[] args) throws FileNotFoundException {
-        //private Random rand;
         WordReader reader = new WordReader();
         List<String> wordList = reader.readWords(file.getPath());
         Random rand = new Random();
-        String secretWord = wordList.get(rand.nextInt(wordList.size()));
+        String secretWord;
 
-        while(!validInput) {
+        if (args == null || args.length == 0) {
+            // Выбираем случайное слово, если аргумент не передан
+            secretWord = wordList.get(rand.nextInt(wordList.size()));
+        } else {
+            try {
+                int index = Integer.parseInt(args[0]);
+                if (index < 0 || index >= wordList.size()) {
+                    System.out.println("Invalid word index. Choosing a random word.");
+                    secretWord = wordList.get(rand.nextInt(wordList.size()));
+                } else {
+                    secretWord = wordList.get(index);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid word index. Choosing a random word.");
+                secretWord = wordList.get(rand.nextInt(wordList.size()));
+            }
+        }
+
+        while (!validInput) {
             System.out.print("Enter your username: ");
             userName = scanner.nextLine();
-            if(userName == null || userName.isEmpty()) {
+            if (userName == null || userName.isEmpty()) {
                 System.out.println("User name can't be empty. Try again.");
-            }
-            else{
+            } else {
                 validInput = true;
             }
         }
+
         System.out.println("Welcome to Wordle! Guess the 5-letter word.");
-        while (attempts < 6){
+        while (attempts < 6) {
             validInput = false;
             while (!validInput) {
                 System.out.print("Enter your guess: ");
@@ -78,7 +93,7 @@ public class WordleGame {
             }
             controller.playGame(guess, secretWord);
             result = controller.getResult();
-            if(controller.getResult().equals("win")){
+            if (controller.getResult().equals("win")) {
                 attempts++;
                 System.out.println("Congratulations! You've guessed the word correctly.");
                 break;
@@ -86,7 +101,7 @@ public class WordleGame {
             attempts++;
             System.out.printf("Attempts remaining: %d\n", 6 - attempts);
         }
-        if(result.isEmpty()){
+        if (result.isEmpty()) {
             result = "loss";
             System.out.println("Game over. The correct word was: " + secretWord);
         }
@@ -102,7 +117,6 @@ public class WordleGame {
 
         System.out.println("Press Enter to exit...");
         scanner.nextLine();
-
     }
 
     public static boolean hasOnlyLowercaseLetters(String s) {
