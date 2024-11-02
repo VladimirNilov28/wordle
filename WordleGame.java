@@ -14,7 +14,7 @@ public class WordleGame {
     private final Scanner scanner;
     private final GameController controller;
     private boolean validInput = false;
-    private final File file = new File("resources/wordle-words.txt"); //change file location if needed
+    private final File file = new File("wordle-words.txt"); //change file location if needed
     private String guess;
     private String userName;
     private int attempts = 0;
