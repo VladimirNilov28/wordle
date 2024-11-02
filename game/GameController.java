@@ -2,15 +2,16 @@ package game;
 
 public class GameController {
 
-
     private String result = "";
-    public void playGame(String guess, String secretWord) {
+    private String remainingLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        if(isGameWon(guess, secretWord)){
+    public void playGame(String guess, String secretWord) {
+        if (isGameWon(guess, secretWord)) {
             result = "win";
-        }
-        else {
+        } else {
             provideFeedback(guess, secretWord);
+            updateRemainingLetters(guess);
+            System.out.println("Remaining letters: " + remainingLetters);
         }
     }
 
@@ -24,14 +25,19 @@ public class GameController {
         }
     }
 
+    private void updateRemainingLetters(String guess) {
+        for (char c : guess.toUpperCase().toCharArray()) {
+            if (remainingLetters.contains(String.valueOf(c))) {
+                remainingLetters = remainingLetters.replace(String.valueOf(c), "");
+            }
+        }
+    }
 
     private boolean isGameWon(String guess, String secretWord) {
-        return guess.equals(secretWord);
+        return guess.equalsIgnoreCase(secretWord);
     }
 
     public String getResult() {
         return result;
     }
-
-
 }

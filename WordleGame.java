@@ -46,7 +46,7 @@ public class WordleGame {
         WordReader reader = new WordReader();
         List<String> wordList = reader.readWords(file.getPath());
         Random rand = new Random();
-        String secretWord = "major";//wordList.get(rand.nextInt(wordList.size()));
+        String secretWord = wordList.get(rand.nextInt(wordList.size()));
 
         while(!validInput) {
             System.out.print("Enter your username: ");
