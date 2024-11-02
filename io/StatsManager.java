@@ -15,72 +15,49 @@ public class StatsManager {
         boolean fileExists = file.exists();
 
         try (FileWriter writer = new FileWriter(file, true)) {
-            // Если файл не существует, добавьте заголовок
             if (!fileExists) {
                 writer.write("Username,SecretWord,Attempts,Result\n");
             }
-            // Запись информации об игре
             writer.write(String.format("%s,%s,%d,%s\n", userName, secretWord, attempts, result));
         } catch (IOException e) {
             handleFileIssues(e);
         }
     }
 
-    public List<String> loadStats() {
-        List<String> stats = new ArrayList<>();
+    public void printStats(String userName) {
         String fileName = "stats.csv";
         File file = new File(fileName);
-
-        if (!file.exists()) {
-            return stats;
-        }
+        int totalGames = 0;
+        int totalAttempts = 0;
+        int gamesWon = 0;
 
         try (Scanner scanner = new Scanner(file)) {
-            // Пропуск заголовка
-            if (scanner.hasNextLine()) {
-                scanner.nextLine();
-            }
-
             while (scanner.hasNextLine()) {
-                stats.add(scanner.nextLine());
+                String line = scanner.nextLine();
+                if (line.startsWith(userName)) {
+                    totalGames++;
+                    String[] parts = line.split(",");
+                    totalAttempts += Integer.parseInt(parts[2]);
+                    if ("win".equalsIgnoreCase(parts[3])) {
+                        gamesWon++;
+                    }
+                }
+            }
+            if (totalGames > 0) {
+                double averageAttempts = (double) totalAttempts / totalGames;
+                System.out.printf("Stats for %s:\n", userName);
+                System.out.printf("Games played: %d\n", totalGames);
+                System.out.printf("Games won: %d\n", gamesWon);
+                System.out.printf("Average attempts per game: %.1f\n", averageAttempts);
+            } else {
+                System.out.println("No stats available for user: " + userName);
             }
         } catch (IOException e) {
             handleFileIssues(e);
         }
-
-        return stats;
-    }
-
-    public void printStats(String userName) {
-        List<String> stats = loadStats();
-        int gamesPlayed = 0;
-        int gamesWon = 0;
-        int totalAttempts = 0;
-
-        for (String stat : stats) {
-            String[] data = stat.split(",");
-            if (data.length == 4 && data[0].equals(userName)) {
-                gamesPlayed++;
-                totalAttempts += Integer.parseInt(data[2]);
-                if (data[3].equals("win")) {
-                    gamesWon++;
-                }
-            }
-        }
-
-        if (gamesPlayed > 0) {
-            double averageAttempts = (double) totalAttempts / gamesPlayed;
-            System.out.printf("Stats for %s:\n", userName);
-            System.out.printf("Games played: %d\n", gamesPlayed);
-            System.out.printf("Games won: %d\n", gamesWon);
-            System.out.printf("Average attempts per game: %.1f\n", averageAttempts);
-        } else {
-            System.out.printf("No stats available for %s.\n", userName);
-        }
     }
 
     private void handleFileIssues(IOException e) {
-        // Вывод сообщения об ошибке работы с файлом
-        System.err.println("Ошибка при работе с файлом статистики: " + e.getMessage());
+        System.err.println("Error handling stats file: " + e.getMessage());
     }
 }

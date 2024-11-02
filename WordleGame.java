@@ -104,6 +104,7 @@ public class WordleGame {
         UserGame userGame = new UserGame(userName, secretWord, attempts, result);
         StatsManager statsManager = new StatsManager();
         statsManager.saveStats(userName, secretWord, attempts, result);
+
         System.out.print("Do you want to see your stats? (yes/no): ");
         String response = scanner.nextLine();
         if (response.equalsIgnoreCase("yes")) {
