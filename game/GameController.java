@@ -28,13 +28,11 @@ public class GameController {
     private void updateRemainingLetters(String guess) {
         for (char c : guess.toUpperCase().toCharArray()) {
             if (remainingLetters.contains(String.valueOf(c))) {
-                // Удаление буквы и лишнего пробела
-                remainingLetters = remainingLetters.replace(c + " ", "");
-                remainingLetters = remainingLetters.replace(String.valueOf(c), "");
+                remainingLetters = remainingLetters.replace(c + " ", "").replace(String.valueOf(c), "");
             }
         }
-        // Убедись, что все оставшиеся буквы идут через пробелы
-        remainingLetters = String.join(" ", remainingLetters.split(" "));
+        // Форматируем оставшиеся буквы с пробелами
+        remainingLetters = String.join(" ", remainingLetters.trim().split(""));
     }
 
 
