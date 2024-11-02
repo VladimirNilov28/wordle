@@ -26,14 +26,14 @@ public class WordleGame {
     }
 
     public static void main(String[] args) {
+        if (args == null || args.length == 0) {
+            System.out.println("Please provide a number as command line argument.");
+            return;
+        }
+
         WordleGame game = new WordleGame(new Scanner(System.in));
         try {
-            if (args == null || args.length == 0) {
-                //System.out.println("No word index provided, using a random word from the list.");
-                game.startGame(null); // Передаем null, чтобы указать на случайный выбор слова
-            } else {
-                game.startGame(args);
-            }
+            game.startGame(args);
         } catch (FileNotFoundException e) {
             System.out.println("Exception: " + e.getMessage());
         }
@@ -45,22 +45,17 @@ public class WordleGame {
         Random rand = new Random();
         String secretWord;
 
-        if (args == null || args.length == 0) {
-            // Выбираем случайное слово, если аргумент не передан
-            secretWord = wordList.get(rand.nextInt(wordList.size()));
-        } else {
-            try {
-                int index = Integer.parseInt(args[0]);
-                if (index < 0 || index >= wordList.size()) {
-                    System.out.println("Invalid word index. Choosing a random word.");
-                    secretWord = wordList.get(rand.nextInt(wordList.size()));
-                } else {
-                    secretWord = wordList.get(index);
-                }
-            } catch (NumberFormatException e) {
+        try {
+            int index = Integer.parseInt(args[0]);
+            if (index < 0 || index >= wordList.size()) {
                 System.out.println("Invalid word index. Choosing a random word.");
                 secretWord = wordList.get(rand.nextInt(wordList.size()));
+            } else {
+                secretWord = wordList.get(index);
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid word index. Choosing a random word.");
+            secretWord = wordList.get(rand.nextInt(wordList.size()));
         }
 
         while (!validInput) {
