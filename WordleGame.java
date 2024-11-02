@@ -46,7 +46,7 @@ public class WordleGame {
         WordReader reader = new WordReader();
         List<String> wordList = reader.readWords(file.getPath());
         Random rand = new Random();
-        String secretWord = wordList.get(rand.nextInt(wordList.size()));
+        String secretWord = "major";//wordList.get(rand.nextInt(wordList.size()));
 
         while(!validInput) {
             System.out.print("Enter your username: ");
@@ -90,9 +90,18 @@ public class WordleGame {
             result = "loss";
             System.out.println("Game over. The correct word was: " + secretWord);
         }
+
         UserGame userGame = new UserGame(userName, secretWord, attempts, result);
         StatsManager statsManager = new StatsManager();
         statsManager.saveStats(userName, secretWord, attempts, result);
+        System.out.print("Do you want to see your stats? (yes/no): ");
+        String response = scanner.nextLine();
+        if (response.equalsIgnoreCase("yes")) {
+            statsManager.printStats(userName);
+        }
+
+        System.out.println("Press Enter to exit...");
+        scanner.nextLine();
 
     }
 

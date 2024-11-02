@@ -3,6 +3,9 @@ package game;
 public class Feedback {
 
     public String generateFeedback(String guess, String secretWord) {
+        guess = guess.toUpperCase();
+        secretWord = secretWord.toUpperCase();
+
         StringBuilder feedback = new StringBuilder();
         for (int i = 0; i < guess.length(); i++) {
             char guessChar = guess.charAt(i);

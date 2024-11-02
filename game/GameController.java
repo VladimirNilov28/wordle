@@ -7,7 +7,6 @@ public class GameController {
     public void playGame(String guess, String secretWord) {
 
         if(isGameWon(guess, secretWord)){
-            System.out.println("Congratulations! You've guessed the word correctly.");
             result = "win";
         }
         else {
