@@ -1,5 +1,8 @@
 package game;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Feedback {
 
     private String GREEN = "\u001B[32m";
@@ -8,25 +11,27 @@ public class Feedback {
     private String WHITE = "\u001B[37m";
 
     public String generateFeedback(String guess, String secretWord) {
-        guess = guess.toUpperCase();
-        secretWord = secretWord.toUpperCase();
         StringBuilder feedback = new StringBuilder();
-        for (int i = 0; i < guess.length(); i++) {
-            char guessChar = guess.charAt(i);
-            char secretChar = secretWord.charAt(i);
+        Set<Character> currentGuessSet = new HashSet<>();
 
-            if (guessChar == secretChar) {
-                // Зелёный цвет для правильных букв на правильных позициях
-                feedback.append(GREEN).append(guessChar).append(RESET);
-            } else if (secretWord.indexOf(guessChar) != -1) {
-                // Жёлтый цвет для правильных букв на неправильных позициях
-                feedback.append(YELLOW).append(guessChar).append(RESET);
-            } else {
-                // Белый цвет для неправильных букв
-                feedback.append(WHITE).append(guessChar).append(RESET);
+        for (int i = 0; i < guess.length(); i++) {
+            char currentChar = guess.charAt(i);
+            currentGuessSet.add(currentChar);
+
+            // check if the character is correct (green)
+            if (currentChar == secretWord.charAt(i)) {
+                feedback.append(GREEN).append(Character.toUpperCase(currentChar)).append(RESET); // green for correct
+            }
+            // check if the character is in the word but in the wrong position (yellow)
+            else if (secretWord.contains(Character.toString(currentChar))) {
+                feedback.append(YELLOW).append(Character.toUpperCase(currentChar)).append(RESET); // yellow for misplaced
+            }
+            // if the character is not in the word (white)
+            else {
+                feedback.append(WHITE).append(Character.toUpperCase(currentChar)).append(RESET); // white for incorrect
             }
         }
-        //System.out.println("Generated feedback: " + feedback.toString()); // Отладочный вывод
+
         return feedback.toString();
     }
 
