@@ -19,6 +19,7 @@ public class WordleGame {
     private String userName;
     private int attempts = 0;
     private String result = "";
+    private String secretWord;
 
     public WordleGame(Scanner scanner) {
         this.scanner = scanner;
@@ -43,7 +44,6 @@ public class WordleGame {
         WordReader reader = new WordReader();
         List<String> wordList = reader.readWords(file.getPath());
         Random rand = new Random();
-        String secretWord;
 
         try {
             int index = Integer.parseInt(args[0]);
