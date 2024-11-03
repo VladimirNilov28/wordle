@@ -32,6 +32,13 @@ public class WordleGame {
             return;
         }
 
+        try {
+            int index = Integer.parseInt(args[0]); // проверка на числовой аргумент
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid command-line argument. Please launch with a valid number.");
+            return;
+        }
+
         WordleGame game = new WordleGame(new Scanner(System.in));
         try {
             game.startGame(args);
@@ -39,6 +46,7 @@ public class WordleGame {
             System.out.println("Exception: " + e.getMessage());
         }
     }
+
 
     private void startGame(String[] args) throws FileNotFoundException {
         WordReader reader = new WordReader();
