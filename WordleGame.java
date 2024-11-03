@@ -34,11 +34,17 @@ public class WordleGame {
 
         WordleGame game = new WordleGame(new Scanner(System.in));
         try {
+            // Проверка, что передан корректный числовой аргумент
+            int index = Integer.parseInt(args[0]);
             game.startGame(args);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid command-line argument. Please launch with a valid number.");
         } catch (FileNotFoundException e) {
             System.out.println("Exception: " + e.getMessage());
         }
     }
+
+
 
     private void startGame(String[] args) throws FileNotFoundException {
         WordReader reader = new WordReader();
