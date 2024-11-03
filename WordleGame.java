@@ -49,11 +49,11 @@ public class WordleGame {
             int index = Integer.parseInt(args[0]);
             if (index < 0 || index >= wordList.size()) {
                 System.out.println("Invalid word index. Choosing a random word.");
-                secretWord = wordList.get(rand.nextInt(wordList.size()));
-                //secretWord = "beach";
+                //secretWord = wordList.get(rand.nextInt(wordList.size()));
+                secretWord = "beach";
             } else {
-                secretWord = wordList.get(index);
-                //secretWord = "beach";
+                //secretWord = wordList.get(index);
+                secretWord = "beach";
 
             }
         } catch (NumberFormatException e) {

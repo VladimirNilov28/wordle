@@ -15,10 +15,15 @@ public class StatsManager {
         boolean fileExists = file.exists();
 
         try (FileWriter writer = new FileWriter(file, true)) {
+            // Если файл не существует, добавляем заголовок
             if (!fileExists) {
                 writer.write("Username,SecretWord,Attempts,Result\n");
             }
-            writer.write(String.format("%s,%s,%d,%s\n", userName, secretWord, attempts, result));
+
+            // Запись данных об игре
+            String statsLine = String.format("%s,%s,%d,%s\n", userName, secretWord, attempts, result);
+            writer.write(statsLine);
+            //System.out.println("Stats saved: " + statsLine); // Отладочное сообщение для проверки записи
         } catch (IOException e) {
             handleFileIssues(e);
         }
