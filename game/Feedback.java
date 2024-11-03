@@ -1,7 +1,7 @@
 package game;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Feedback {
 
@@ -12,19 +12,32 @@ public class Feedback {
 
     public String generateFeedback(String guess, String secretWord) {
         StringBuilder feedback = new StringBuilder();
-        Set<Character> currentGuessSet = new HashSet<>();
+        Map<Character, Integer> secretWordCharCount = new HashMap<>();
 
+        // Count the occurrences of each character in the secret word
+        for (char c : secretWord.toCharArray()) {
+            secretWordCharCount.put(c, secretWordCharCount.getOrDefault(c, 0) + 1);
+        }
+
+        // First pass: mark correct characters (green)
         for (int i = 0; i < guess.length(); i++) {
             char currentChar = guess.charAt(i);
-            currentGuessSet.add(currentChar);
-
-            // check if the character is correct (green)
             if (currentChar == secretWord.charAt(i)) {
                 feedback.append(GREEN).append(Character.toUpperCase(currentChar)).append(RESET); // green for correct
+                secretWordCharCount.put(currentChar, secretWordCharCount.get(currentChar) - 1);
+            }
+        }
+
+        // Second pass: mark misplaced and incorrect characters
+        for (int i = 0; i < guess.length(); i++) {
+            char currentChar = guess.charAt(i);
+            if (currentChar == secretWord.charAt(i)) {
+                continue; // already marked as correct
             }
             // check if the character is in the word but in the wrong position (yellow)
-            else if (secretWord.contains(Character.toString(currentChar))) {
+            else if (secretWord.contains(Character.toString(currentChar)) && secretWordCharCount.get(currentChar) > 0) {
                 feedback.append(YELLOW).append(Character.toUpperCase(currentChar)).append(RESET); // yellow for misplaced
+                secretWordCharCount.put(currentChar, secretWordCharCount.get(currentChar) - 1);
             }
             // if the character is not in the word (white)
             else {
