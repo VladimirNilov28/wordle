@@ -14,7 +14,7 @@ public class WordleGame {
     private final Scanner scanner;
     private final GameController controller;
     private boolean validInput = false;
-    private final File file = new File("wordle-words.txt"); //change file location if needed
+    private final File file = new File("wordle-words.txt"); // change file location if needed
     private String guess;
     private String userName;
     private int attempts = 0;
@@ -34,17 +34,11 @@ public class WordleGame {
 
         WordleGame game = new WordleGame(new Scanner(System.in));
         try {
-            // Проверка, что передан корректный числовой аргумент
-            int index = Integer.parseInt(args[0]);
             game.startGame(args);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid command-line argument. Please launch with a valid number.");
         } catch (FileNotFoundException e) {
             System.out.println("Exception: " + e.getMessage());
         }
     }
-
-
 
     private void startGame(String[] args) throws FileNotFoundException {
         WordReader reader = new WordReader();
@@ -56,11 +50,8 @@ public class WordleGame {
             if (index < 0 || index >= wordList.size()) {
                 System.out.println("Invalid word index. Choosing a random word.");
                 secretWord = wordList.get(rand.nextInt(wordList.size()));
-                //secretWord = "beach";
             } else {
                 secretWord = wordList.get(index);
-                //secretWord = "beach";
-
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid word index. Choosing a random word.");
@@ -95,22 +86,26 @@ public class WordleGame {
                     validInput = true;
                 }
             }
+
             controller.playGame(guess, secretWord);
             result = controller.getResult();
-            if (controller.getResult().equals("win")) {
-                attempts++;
+            attempts++;
+
+            if (result.equals("win")) {
                 System.out.println("Congratulations! You've guessed the word correctly.");
                 break;
+            } else {
+                System.out.printf("Attempts remaining: %d\n", 6 - attempts);
             }
-            attempts++;
-            System.out.printf("Attempts remaining: %d\n", 6 - attempts);
         }
-        if (result.isEmpty()) {
+
+        // Проверка и присвоение результата, если игрок не выиграл
+        if (!result.equals("win")) {
             result = "loss";
             System.out.println("Game over. The correct word was: " + secretWord);
         }
 
-        UserGame userGame = new UserGame(userName, secretWord, attempts, result);
+        // Сохранение результатов игры
         StatsManager statsManager = new StatsManager();
         statsManager.saveStats(userName, secretWord, attempts, result);
 
