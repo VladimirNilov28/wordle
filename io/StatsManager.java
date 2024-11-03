@@ -21,7 +21,7 @@ public class StatsManager {
             }
 
             // Запись данных об игре
-            String statsLine = String.format("%s,%s,%d,%s\n", userName, secretWord, attempts, result);
+            String statsLine = String.format("%s,%s,%d,%s\n", userName, secretWord, attempts, result.toLowerCase());
             writer.write(statsLine);
             //System.out.println("Stats saved: " + statsLine); // Отладочное сообщение для проверки записи
         } catch (IOException e) {
@@ -43,7 +43,7 @@ public class StatsManager {
                     totalGames++;
                     String[] parts = line.split(",");
                     totalAttempts += Integer.parseInt(parts[2]);
-                    if ("win".equalsIgnoreCase(parts[3])) {
+                    if ("win".equalsIgnoreCase(parts[3].trim())) {
                         gamesWon++;
                     }
                 }
